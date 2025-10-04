@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Interaktív számoló (GitHub Pages)</title>
+  <style>
+    body { font-family: system-ui, Arial; padding: 20px; max-width: 640px; }
+    label { display:block; margin-top:12px; }
+    input[type="number"], input[readonly] { width:100%; padding:8px; font-size:16px; box-sizing:border-box; }
+    button { margin-top:12px; padding:10px 14px; font-size:16px; cursor:pointer; border-radius:6px; }
+    .hint { color:#555; font-size:13px; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <h2>Számoló példa — írj be számokat, majd nyomd meg a gombot</h2>
+
+  <form id="calcForm">
+    <label for="a">A (szám)
+      <input id="a" type="number" step="any" value="2" required>
+    </label>
+
+    <label for="b">B (szám)
+      <input id="b" type="number" step="any" value="3" required>
+    </label>
+
+    <label for="c">C (szám)
+      <input id="c" type="number" step="any" value="1" required>
+    </label>
+
+    <button id="calcBtn" type="submit">Számol</button>
+
+    <div class="hint">Eredmény egy külön, csak olvasható mezőbe íródik.</div>
+
+    <label for="result">Eredmény
+      <input id="result" type="text" readonly placeholder="Itt jelenik meg az eredmény">
+    </label>
+  </form>
+
+  <script>
+    // Segéd: biztonságos számmá alakítás (vesszőt is kezeli)
+    function toNum(v) {
+      const x = parseFloat(String(v).replace(',', '.'));
+      return Number.isFinite(x) ? x : 0;
+    }
+
+    // A képletedet itt egyszerűen módosíthatod:
+    // Példa: eredmeny = a * b + c
+    function compute(a, b, c) {
+      return a * b + c;
+    }
+
+    const form = document.getElementById('calcForm');
+    const aIn = document.getElementById('a');
+    const bIn = document.getElementById('b');
+    const cIn = document.getElementById('c');
+    const resultIn = document.getElementById('result');
+
+    // Form submit kezeli a gombnyomást és az Enter-t is
+    form.addEventListener('submit', function(ev) {
+      ev.preventDefault();
+      const a = toNum(aIn.value);
+      const b = toNum(bIn.value);
+      const c = toNum(cIn.value);
+
+      const eredmeny = compute(a, b, c);
+
+      // Kiírás: tetszés szerinti formázás
+      resultIn.value = eredmeny;
+    });
+
+    // Opcionálisan: élő számolás inputra
+    // [Kommenteld ki, ha csak gombbal szeretnéd]
+    // [aIn,bIn,cIn].forEach(el => el.addEventListener('input', () => form.dispatchEvent(new Event('submit'))));
+  </script>
+</body>
+</html>
