@@ -1,77 +1,126 @@
 <!doctype html>
-<html lang="hu">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Interaktív számoló (GitHub Pages)</title>
+  <title>Armada - SpaceApps2025</title>
   <style>
-    body { font-family: system-ui, Arial; padding: 20px; max-width: 640px; }
-    label { display:block; margin-top:12px; }
-    input[type="number"], input[readonly] { width:100%; padding:8px; font-size:16px; box-sizing:border-box; }
-    button { margin-top:12px; padding:10px 14px; font-size:16px; cursor:pointer; border-radius:6px; }
-    .hint { color:#555; font-size:13px; margin-top:8px; }
+    :root { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color: #111; }
+    body { padding: 24px; max-width: 720px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    p.lead { margin-top: 0; color:#444; font-size:0.95rem; }
+    label { display:block; margin-top:12px; font-weight:600; font-size:0.95rem; }
+    input[type="number"], input[readonly], .output {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-top:6px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .controls { margin-top: 14px; display:flex; gap:10px; }
+    button {
+      padding: 10px 14px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background: #0b76ff;
+      color: white;
+    }
+    button.secondary {
+      background: #e6e6e6;
+      color: #111;
+    }
+    .hint { color:#666; font-size:0.9rem; margin-top:10px; }
+    .result-label { margin-top:16px; font-weight:600; }
   </style>
 </head>
 <body>
-  <h2>Számoló példa — írj be számokat, majd nyomd meg a gombot</h2>
+  <h1>Interactive Calculator</h1>
+  <p class="lead">We have provided an example, but you can try it out with your own quantities. Enter numbers into the fields below and press <strong>Calculate</strong>. The result will appear in the readonly output field.</p>
 
-  <form id="calcForm">
-    <label for="a">A (szám)
-      <input id="a" type="number" step="any" value="2" required>
+  <form id="calculator" aria-labelledby="calc-title">
+    <label for="a">Cotton
+      <input id="a" name="a" type="number" step="any" value="2" required aria-describedby="a-desc">
     </label>
 
-    <label for="b">B (szám)
-      <input id="b" type="number" step="any" value="3" required>
+    <label for="b">B (number)
+      <input id="b" name="b" type="number" step="any" value="3" required aria-describedby="b-desc">
     </label>
 
-    <label for="c">C (szám)
-      <input id="c" type="number" step="any" value="1" required>
+    <label for="c">C (number)
+      <input id="c" name="c" type="number" step="any" value="1" required aria-describedby="c-desc">
     </label>
 
-    <button id="calcBtn" type="submit">Számol</button>
+    <div class="controls">
+      <button id="calcBtn" type="submit">Calculate</button>
+      <button id="clearBtn" type="button" class="secondary">Clear</button>
+    </div>
 
-    <div class="hint">Eredmény egy külön, csak olvasható mezőbe íródik.</div>
+    <div class="hint">Decimal comma is supported (e.g. "1,5" will be interpreted as 1.5).</div>
 
-    <label for="result">Eredmény
-      <input id="result" type="text" readonly placeholder="Itt jelenik meg az eredmény">
-    </label>
+    <div class="result-label">Result</div>
+    <input id="result" class="output" type="text" readonly placeholder="Result will appear here" aria-live="polite" />
   </form>
 
   <script>
-    // Segéd: biztonságos számmá alakítás (vesszőt is kezeli)
-    function toNum(v) {
-      const x = parseFloat(String(v).replace(',', '.'));
-      return Number.isFinite(x) ? x : 0;
+    // Safely parse numbers; accepts comma or dot as decimal separator.
+    function toNumber(value) {
+      if (value === null || value === undefined) return 0;
+      const normalized = String(value).trim().replace(',', '.');
+      const parsed = parseFloat(normalized);
+      return Number.isFinite(parsed) ? parsed : 0;
     }
 
-    // A képletedet itt egyszerűen módosíthatod:
-    // Példa: eredmeny = a * b + c
+    //Formula
     function compute(a, b, c) {
       return a * b + c;
     }
+    // ------------------------------
 
-    const form = document.getElementById('calcForm');
-    const aIn = document.getElementById('a');
-    const bIn = document.getElementById('b');
-    const cIn = document.getElementById('c');
-    const resultIn = document.getElementById('result');
+    const form = document.getElementById('calculator');
+    const aInput = document.getElementById('a');
+    const bInput = document.getElementById('b');
+    const cInput = document.getElementById('c');
+    const resultInput = document.getElementById('result');
+    const clearBtn = document.getElementById('clearBtn');
 
-    // Form submit kezeli a gombnyomást és az Enter-t is
-    form.addEventListener('submit', function(ev) {
-      ev.preventDefault();
-      const a = toNum(aIn.value);
-      const b = toNum(bIn.value);
-      const c = toNum(cIn.value);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const a = toNumber(aInput.value);
+      const b = toNumber(bInput.value);
+      const c = toNumber(cInput.value);
 
-      const eredmeny = compute(a, b, c);
+      const result = compute(a, b, c);
 
-      // Kiírás: tetszés szerinti formázás
-      resultIn.value = eredmeny;
+      // Format result (remove trailing zeros for readability)
+      const str = (Math.round((result + Number.EPSILON) * 1e12) / 1e12).toString();
+      resultInput.value = str;
+      resultInput.focus();
     });
 
-    // Opcionálisan: élő számolás inputra
-    // [Kommenteld ki, ha csak gombbal szeretnéd]
-    // [aIn,bIn,cIn].forEach(el => el.addEventListener('input', () => form.dispatchEvent(new Event('submit'))));
+    clearBtn.addEventListener('click', function () {
+      aInput.value = '';
+      bInput.value = '';
+      cInput.value = '';
+      resultInput.value = '';
+      aInput.focus();
+    });
+
+    // Allow Enter in any input to trigger calculation
+    [aInput, bInput, cInput].forEach(inp => {
+      inp.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter') {
+          ev.preventDefault();
+          form.dispatchEvent(new Event('submit', { cancelable: true }));
+        }
+      });
+    });
+
+    // Initial calculation on load
+    form.dispatchEvent(new Event('submit', { cancelable: true }));
   </script>
 </body>
 </html>
