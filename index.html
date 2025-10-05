@@ -1,9 +1,9 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BioCycleX</title>
   <meta name="description" content="BioCycleX — Closed-loop textile-to-food platform for Mars and remote ops." />
   <style>
     :root{
@@ -41,15 +41,6 @@
     .flow-img{width:100%;height:auto;border-radius:14px;border:1px solid rgba(0,0,0,.08)}
     .calc-wrap{display:grid;grid-template-columns:1fr;gap:18px}
     @media(min-width:980px){.calc-wrap{grid-template-columns:1fr 1fr}}
-    .items{display:grid;grid-template-columns:1fr;gap:6px;max-height:360px;overflow:auto;padding-right:6px}
-    .item{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid rgba(0,0,0,.07);border-radius:12px;background:#fff}
-    .qty{margin-left:auto;display:flex;align-items:center;gap:6px}
-    input[type="number"]{width:70px;padding:6px 8px;border-radius:10px;border:1px solid rgba(0,0,0,.2)}
-    button.primary{
-      background:linear-gradient(180deg,#2c6e2c,#1e4f1e);color:#fff;border:none;
-      padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer
-    }
-    button.primary:hover{filter:brightness(1.05)}
     .results{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.06);padding:16px}
     .results h3{margin-top:6px}
     .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -57,6 +48,28 @@
     .stat{background:var(--bg);border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px;text-align:center}
     small.code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;color:#3a3a3a}
     footer{padding:40px 0;color:#2a2a2a}
+
+    /* Fine details + lists for workflow */
+    .fine{font-size:12px;color:#666;margin:6px 4px 0 4px}
+    .sub{margin:14px 0 6px 0;font-size:16px}
+    .steps{margin:0 0 8px 18px;padding:0;display:grid;gap:6px}
+    .steps li{margin:0 0 2px 0}
+    .ticks{list-style:"✓  "; margin:0 0 0 18px; display:grid; gap:6px}
+
+    /* Calculator: select + chips */
+    .select-row{display:flex;gap:10px;align-items:flex-start}
+    #itemSelect{width:100%;min-height:220px;padding:8px;border-radius:12px;border:1px solid rgba(0,0,0,.12);background:#fff}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:6px 10px}
+    .chip .x{cursor:pointer;border:none;background:transparent;font-weight:700}
+    .chip input[type="number"]{width:70px;padding:4px 6px;border-radius:10px;border:1px solid rgba(0,0,0,.2)}
+    .help{font-size:12px;color:#666;margin-top:6px}
+
+    button.primary{
+      background:linear-gradient(180deg,#2c6e2c,#1e4f1e);color:#fff;border:none;
+      padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer
+    }
+    button.primary:hover{filter:brightness(1.05)}
   </style>
 </head>
 <body>
@@ -77,32 +90,67 @@
           <div class="kicker">Who we are</div>
           <p>BioCycleX is an engineering–biotech team that turns space textile waste into glucose syrup via a closed, safe enzymatic process, then converts that glucose into edible or useful products (e.g., nutritional yeast, biogases, PLA precursors). Our system is built for real Mars constraints: minimal water and crew time, no incineration, and low risk.</p>
           <div class="kicker" style="margin-top:16px">Our mission</div>
-          <p>We are building a modular, Mars-ready circular system that first targets one of the largest waste streams—fabrics—and converts it into a platform product: glucose. From there, we flexibly route it into nutritional yeast, plant fertilizer, bioplastics (PLA), or fuel components, reducing resupply mass from Earth. From microbe selection to system architecture, we’ve already designed toward future spaceflight compliance—accounting for vibration profiles, g-loads, and microgravity fluid handling—so the platform can be qualified to relevant standards. The system is closed-loop, relies on non-pathogenic microbes, and can scale beyond textiles to other polymers.</p>
+          <p>We are building a modular, Mars-ready circular system that first targets one of the largest waste streams—fabrics—and converts it into a platform product: glucose. From there, we flexibly route it into nutritional yeast, plant fertilizer, bioplastics (PLA), or fuel components, reducing resupply mass from Earth. From microbe selection to system architecture, we’ve already designed toward future spaceflight compliance—accounting for vibration profiles, g-loads, and microgravity fluid handling—so the platform can be qualified to relevant standards.</p>
           <p>Looking ahead: the approach is expandable to additional waste types. For now, we demonstrate the most immediate chain: textile → sugar → yeast, because it’s fast to grasp and directly useful for the crew.</p>
         </div>
+
+        <!-- Cleaned workflow block -->
         <div>
-          <img class="flow-img" src="assets/textil_example_flowchart.png" alt="Textile → glucose → yeast flowchart" />
-          <p style="font-size:12px;color:#666;margin:6px 4px 0 4px">Example technical workflow — fabrics → sugar → yeast.</p>
+          <figure class="card">
+            <img class="flow-img" src="assets/textil_example_flowchart.png" alt="Workflow turning textiles into glucose and nutritional yeast" loading="lazy" />
+            <figcaption class="fine">Example technical workflow — fabrics → sugar → yeast.</figcaption>
+          </figure>
+
+          <div class="card">
+            <div class="kicker">Example technical workflow — fabrics ≈30% of total inorganic waste</div>
+            <p>We treat ~4 kg/day of used textiles (≈75% cotton/cellulose, 21% polyester, 4% nylon) not as trash but as feedstock. Goal: convert one fraction into nutritional yeast and route the rest into useful materials.</p>
+
+            <h3 class="sub">Step by step</h3>
+            <ol class="steps">
+              <li><strong>Rapid hygiene</strong> — UV-C + mild pasteurization keeps downstream operations clean and safe.</li>
+              <li><strong>Shredding & separation</strong> — Fibers are milled, then split into cotton, polyester, and nylon via <em>tribo-electrostatic</em> separation.</li>
+              <li><strong>The “sugar factory”</strong> — Cotton (cellulose) enters a bioreactor. Enzymes from friendly microbes cut fibers into glucose (~2.85 kg/day). ~10% of enzymes are recirculated.</li>
+              <li><strong>Yeast works</strong> — Glucose is polished and sterilized, then fed (aerobic fed-batch) to grow yeast. Biomass is heat-inactivated and dried → nutritional yeast ~1.35 kg/day, 45–55% protein (~0.6–0.7 kg/day protein).</li>
+              <li><strong>The rest</strong> — Nylon diverts to a separate line (e.g., 3D-printing filament). Polyester handling is planned for the next sprint.</li>
+            </ol>
+
+            <h3 class="sub">Why this works on Mars</h3>
+            <ul class="ticks">
+              <li>Low water & crew time, fully closed-loop, no incineration.</li>
+              <li>Design considers vibration/shock, g-loads, and microgravity fluid handling for future flight readiness.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
-    
-
+    <!-- CALCULATOR -->
     <section id="calculator">
-      <h2>W</h2>
-      <p>Select what you’re wearing, set quantities, then hit <strong>Calculate</strong>. The tool multiplies the average garment mass by its cellulose fraction, sums it, and converts cellulose to yeast with the rule: <strong>x kg cellulose → 0.456 × x kg nutritional yeast</strong>.</p>
+      <h2>Wondering how many “space bars” your clothes are worth?</h2>
+      <p>Pick items from the list, set quantities, then press <strong>Calculate</strong>. We convert textile cellulose to yeast with <strong>x kg cellulose → 0.456 × x kg nutritional yeast</strong>.</p>
 
       <div class="calc-wrap">
+        <!-- LEFT: inputs -->
         <div class="card">
-          <div class="kicker">Choose items</div>
-          <div id="items" class="items" aria-live="polite"></div>
-          <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
-            <button class="primary" id="calcBtn">Calculate</button>
+          <div class="kicker">Choose clothing & textiles</div>
+          <div class="select-row">
+            <select id="itemSelect" multiple aria-label="Clothing items (hold Ctrl/Cmd to select multiple)"></select>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button class="primary" id="addBtn" type="button">Add selected</button>
+              <small class="help">Tip: hold Ctrl/Cmd (or Shift) to select multiple.</small>
+            </div>
+          </div>
+
+          <div class="kicker" style="margin-top:16px">Selected items</div>
+          <div id="chosen" class="chips" aria-live="polite"></div>
+
+          <div style="display:flex;gap:10px;align-items:center;margin-top:16px">
+            <button class="primary" id="calcBtn" type="button">Calculate</button>
             <small class="code">Data source: <code>textiles_db.csv</code></small>
           </div>
         </div>
 
+        <!-- RIGHT: results -->
         <div class="results">
           <h3>Results</h3>
           <div id="summary"></div>
@@ -113,7 +161,7 @@
           </div>
 
           <h3 style="margin-top:16px">Nutrition (batch total)</h3>
-          <p style="margin-top:0">Typical values per 100 g yeast: 1345 kJ / 320 kcal · Fat 4.8 g (sat 1.6 g) · Carbs 9 g (sugars 9 g) · Protein 47 g · Salt 0.5 g</p>
+          <p class="help" style="margin-top:0">Typical values per 100 g yeast: 1345 kJ / 320 kcal · Fat 4.8 g (sat 1.6 g) · Carbs 9 g (sugars 9 g) · Protein 47 g · Salt 0.5 g</p>
           <div class="stats">
             <div class="stat"><div id="kcal">0</div><small>Total kcal</small></div>
             <div class="stat"><div id="kj">0</div><small>Total kJ</small></div>
@@ -131,8 +179,9 @@
     <section id="about">
       <div class="card">
         <div class="kicker">Notes</div>
-        <p>About us</p>
-        </div>
+        <p><strong>Fonts:</strong> The page expects “Agrandir”. You can add a webfont later; meanwhile it falls back to system fonts.</p>
+        <p><strong>Assets:</strong> Put <code>assets/BioCycleX.png</code> and <code>assets/textil_example_flowchart.png</code> in the <code>assets/</code> folder next to this file. Keep <code>textiles_db.csv</code> in the repo root.</p>
+      </div>
     </section>
   </main>
 
@@ -142,77 +191,91 @@
     </div>
   </footer>
 
+  <!-- Calculator script -->
   <script>
-    const csvPath = 'textiles_db.csv';
-    const ITEMS_DIV = document.getElementById('items');
-    const SUMMARY_DIV = document.getElementById('summary');
-    const YEAST_YIELD = 0.456; // kg yeast per kg cellulose
+    const csvPath = './textiles_db.csv';            // keep this next to index.html
+    const CACHE_BUSTER = '?v=' + Date.now();        // prevent stale caching on GitHub Pages
+    const YEAST_YIELD = 0.456;
 
-    const nutrPer100 = {
-      kcal: 320, kj: 1345, fatG: 4.8, satG: 1.6, carbG: 9, sugarG: 9, proteinG: 47, saltG: 0.5
-    };
+    const nutrPer100 = { kcal: 320, kj: 1345, fatG: 4.8, satG: 1.6, carbG: 9, sugarG: 9, proteinG: 47, saltG: 0.5 };
 
     const el = id => document.getElementById(id);
     const fmt = n => Number(n).toLocaleString(undefined,{maximumFractionDigits:3});
 
-    function renderItems(data){
-      ITEMS_DIV.innerHTML='';
-      data.forEach((r,idx)=>{
-        const id = 'it_'+idx;
-        const row = document.createElement('label');
-        row.className = 'item';
-        row.innerHTML = \`
-          <input type="checkbox" id="\${id}" data-item="\${r.item}" data-mass="\${r.avg_weight_kg}" data-frac="\${r.cellulose_fraction}" />
-          <span>\${r.item}</span>
-          <span style="color:#666">· \${r.avg_weight_kg} kg · cellulose \${Math.round(r.cellulose_fraction*100)}%</span>
-          <div class="qty">
-            <span>qty</span>
-            <input type="number" min="1" step="1" value="1" data-qty-for="\${id}" />
-          </div>\`;
-        ITEMS_DIV.appendChild(row);
+    let DB = [];       // loaded CSV
+    let chosen = [];   // {item, mass, frac, qty}
+
+    // Render select from DB
+    function renderSelect(){
+      const sel = el('itemSelect');
+      sel.innerHTML = '';
+      DB.forEach((r,i)=>{
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        opt.textContent = `${r.item} — ${r.avg_weight_kg} kg · cellulose ${Math.round(r.cellulose_fraction*100)}%`;
+        sel.appendChild(opt);
       });
     }
 
-    function parseCSV(text){
-      const [head, ...rows] = text.trim().split(/\r?\n/);
-      const cols = head.split(',').map(s=>s.trim());
-      return rows.map(line=>{
-        const cells = line.split(',').map(s=>s.trim());
-        const obj = {};
-        cols.forEach((c,i)=> obj[c] = isNaN(parseFloat(cells[i])) ? cells[i] : parseFloat(cells[i]) );
-        return obj;
+    // Render chosen chips
+    function renderChosen(){
+      const box = el('chosen');
+      box.innerHTML = '';
+      chosen.forEach((c,idx)=>{
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.innerHTML = `
+          <span>${c.item}</span>
+          <span class="help">${(c.mass).toFixed(3)} kg · ${Math.round(c.frac*100)}% cellulose</span>
+          <span>qty</span>
+          <input type="number" min="1" step="1" value="${c.qty}" data-idx="${idx}">
+          <button class="x" title="Remove" data-rm="${idx}">×</button>
+        `;
+        box.appendChild(chip);
+      });
+      // qty change
+      box.querySelectorAll('input[type="number"]').forEach(inp=>{
+        inp.addEventListener('input', e=>{
+          const i = parseInt(e.target.dataset.idx,10);
+          chosen[i].qty = Math.max(1, parseInt(e.target.value||'1',10));
+        });
+      });
+      // remove
+      box.querySelectorAll('button[data-rm]').forEach(b=>{
+        b.addEventListener('click', e=>{
+          const i = parseInt(e.target.dataset.rm,10);
+          chosen.splice(i,1);
+          renderChosen();
+        });
       });
     }
 
-    async function loadData(){
-      const res = await fetch(csvPath);
-      const txt = await res.text();
-      return parseCSV(txt);
+    function addSelected(){
+      const sel = el('itemSelect');
+      const picks = [...sel.selectedOptions].map(o=>DB[parseInt(o.value,10)]);
+      picks.forEach(r=>{
+        if(!chosen.find(c=>c.item===r.item)){
+          chosen.push({item:r.item, mass:+r.avg_weight_kg, frac:+r.cellulose_fraction, qty:1});
+        }
+      });
+      renderChosen();
     }
 
     function calculate(){
-      const checks = [...ITEMS_DIV.querySelectorAll('input[type="checkbox"]')];
-      const chosen = [];
-      checks.forEach(chk=>{
-        if(chk.checked){
-          const qty = parseInt(ITEMS_DIV.querySelector('input[data-qty-for="'+chk.id+'"]').value || '1',10);
-          chosen.push({
-            item: chk.dataset.item,
-            qty,
-            mass: parseFloat(chk.dataset.mass),
-            frac: parseFloat(chk.dataset.frac)
-          });
-        }
-      });
       if(!chosen.length){
-        SUMMARY_DIV.innerHTML = '<p>Select at least one item.</p>';
+        el('summary').innerHTML = '<p>Select at least one item.</p>';
         updateNumbers(0,0,0);
         return;
       }
-      const totalMass = chosen.reduce((s,r)=>s + r.qty*r.mass, 0);
-      const cellu = chosen.reduce((s,r)=>s + r.qty*r.mass*r.frac, 0);
-      const yeast = cellu * YEAST_YIELD;
-      SUMMARY_DIV.innerHTML = '<ul>' + chosen.map(r=>`<li>${r.qty} × ${r.item} — ${(r.qty*r.mass).toFixed(3)} kg textile, ${(r.qty*r.mass*r.frac).toFixed(3)} kg cellulose</li>`).join('') + '</ul>';
+      const totalMass = chosen.reduce((s,c)=> s + c.qty*c.mass, 0);
+      const cellu     = chosen.reduce((s,c)=> s + c.qty*c.mass*c.frac, 0);
+      const yeast     = cellu * YEAST_YIELD;
+
+      el('summary').innerHTML =
+        '<ul>' + chosen.map(c=>(
+          `<li>${c.qty} × ${c.item} — ${(c.qty*c.mass).toFixed(3)} kg textile, ${(c.qty*c.mass*c.frac).toFixed(3)} kg cellulose</li>`
+        )).join('') + '</ul>';
+
       updateNumbers(totalMass, cellu, yeast);
     }
 
@@ -222,27 +285,66 @@
       el('yeastKg').textContent = fmt(yeast);
 
       const g = yeast * 1000;
-      const factor = g/100; // per-100g basis
-      el('kcal').textContent = fmt(nutrPer100.kcal*factor);
-      el('kj').textContent = fmt(nutrPer100.kj*factor);
-      el('proteinG').textContent = fmt(nutrPer100.proteinG*factor);
-      el('fatG').textContent = fmt(nutrPer100.fatG*factor);
-      el('satG').textContent = fmt(nutrPer100.satG*factor);
-      el('carbG').textContent = fmt(nutrPer100.carbG*factor);
-      el('sugarG').textContent = fmt(nutrPer100.sugarG*factor);
-      el('saltG').textContent = fmt(nutrPer100.saltG*factor);
+      const f = g/100;
+      el('kcal').textContent     = fmt(nutrPer100.kcal*f);
+      el('kj').textContent       = fmt(nutrPer100.kj*f);
+      el('proteinG').textContent = fmt(nutrPer100.proteinG*f);
+      el('fatG').textContent     = fmt(nutrPer100.fatG*f);
+      el('satG').textContent     = fmt(nutrPer100.satG*f);
+      el('carbG').textContent    = fmt(nutrPer100.carbG*f);
+      el('sugarG').textContent   = fmt(nutrPer100.sugarG*f);
+      el('saltG').textContent    = fmt(nutrPer100.saltG*f);
     }
 
+    // CSV load with fallback
+    function parseCSV(text){
+      const [head, ...rows] = text.trim().split(/\r?\n/);
+      const cols = head.split(',').map(s=>s.trim());
+      return rows.map(line=>{
+        const cells = line.split(',').map(s=>s.trim());
+        const o = {};
+        cols.forEach((c,i)=> o[c] = isNaN(parseFloat(cells[i])) ? cells[i] : parseFloat(cells[i]) );
+        return o;
+      });
+    }
+
+    const FALLBACK_DATA = [
+      {"item":"T-shirt","avg_weight_kg":0.18,"cellulose_fraction":0.75},
+      {"item":"Shirt","avg_weight_kg":0.20,"cellulose_fraction":0.75},
+      {"item":"Jeans","avg_weight_kg":0.60,"cellulose_fraction":0.90},
+      {"item":"Pants","avg_weight_kg":0.50,"cellulose_fraction":0.75},
+      {"item":"Hoodie","avg_weight_kg":0.55,"cellulose_fraction":0.70},
+      {"item":"Dress","avg_weight_kg":0.35,"cellulose_fraction":0.70},
+      {"item":"One pair of socks","avg_weight_kg":0.06,"cellulose_fraction":0.75},
+      {"item":"Underwear","avg_weight_kg":0.05,"cellulose_fraction":0.75},
+      {"item":"Towel","avg_weight_kg":0.40,"cellulose_fraction":0.90},
+      {"item":"Bedsheet (single)","avg_weight_kg":0.50,"cellulose_fraction":1.00},
+      {"item":"Tissue","avg_weight_kg":0.005,"cellulose_fraction":1.00}
+    ];
+
+    async function loadData(){
+      try{
+        const res = await fetch(csvPath + CACHE_BUSTER, {cache:'no-store'});
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const txt = await res.text();
+        const arr = parseCSV(txt);
+        if(!arr.length) throw new Error('Empty CSV');
+        return arr;
+      }catch(e){
+        console.warn('CSV load failed, using fallback.', e);
+        return FALLBACK_DATA;
+      }
+    }
+
+    // Boot
+    document.getElementById('addBtn').addEventListener('click', addSelected);
     document.getElementById('calcBtn').addEventListener('click', calculate);
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    loadData().then(renderItems).catch(e=>{
-      ITEMS_DIV.innerHTML = '<p>Could not load textiles_db.csv. Make sure it sits next to index.html.</p>';
-      console.error(e);
+    loadData().then(data=>{
+      DB = data;
+      renderSelect();
     });
   </script>
 </body>
 </html>
-
-
-
