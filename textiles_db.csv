@@ -1,0 +1,32 @@
+item,avg_weight_kg,cellulose_fraction
+T-shirt,0.18,0.75
+Shirt,0.2,0.75
+Polo shirt,0.22,0.75
+Jeans,0.6,0.9
+Pants,0.5,0.75
+Shorts,0.2,0.6
+Sweatpants,0.55,0.65
+Leggings,0.2,0.4
+Hoodie,0.55,0.7
+Sweater,0.45,0.6
+Dress,0.35,0.7
+Skirt,0.25,0.7
+Jacket,0.8,0.4
+Coat,1.2,0.3
+Scarf,0.18,0.8
+Beanie,0.08,0.5
+Gloves (pair),0.09,0.5
+Underwear,0.05,0.75
+One pair of socks,0.06,0.75
+Towel,0.4,0.9
+Washcloth,0.06,1.0
+Bathrobe,1.0,0.85
+Bedsheet (single),0.5,1.0
+Bedsheet (double),0.8,1.0
+Pillowcase,0.12,1.0
+Duvet cover,0.7,1.0
+Blanket,1.5,0.8
+Duvet,2.0,0.2
+Kitchen cloth,0.08,1.0
+Tissue,0.005,1.0
+Baby onesie,0.06,0.75
