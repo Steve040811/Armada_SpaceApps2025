@@ -84,45 +84,44 @@
 
   <main class="wrap">
     <section id="hero">
-      <div class="grid">
-        <div class="card">
-          <h1>Turning space waste into food and materials</h1>
-          <div class="kicker">Who we are</div>
-          <p>BioCycleX is an engineering–biotech team that turns space textile waste into glucose syrup via a closed, safe enzymatic process, then converts that glucose into edible or useful products (e.g., nutritional yeast, biogases, PLA precursors). Our system is built for real Mars constraints: minimal water and crew time, no incineration, and low risk.</p>
-          <div class="kicker" style="margin-top:16px">Our mission</div>
-          <p>We are building a modular, Mars-ready circular system that first targets one of the largest waste streams—fabrics—and converts it into a platform product: glucose. From there, we flexibly route it into nutritional yeast, plant fertilizer, bioplastics (PLA), or fuel components, reducing resupply mass from Earth. From microbe selection to system architecture, we’ve already designed toward future spaceflight compliance—accounting for vibration profiles, g-loads, and microgravity fluid handling—so the platform can be qualified to relevant standards.</p>
-          <p>Looking ahead: the approach is expandable to additional waste types. For now, we demonstrate the most immediate chain: textile → sugar → yeast, because it’s fast to grasp and directly useful for the crew.</p>
-        </div>
-
-        <!-- Cleaned workflow block -->
-        <div>
-          <figure class="card">
-            <img class="flow-img" src="assets/textil_example_flowchart.png" alt="Workflow turning textiles into glucose and nutritional yeast" loading="lazy" />
-            <figcaption class="fine">Example technical workflow — fabrics → sugar → yeast.</figcaption>
-          </figure>
-
-          <div class="card">
-            <div class="kicker">Example technical workflow — fabrics ≈30% of total inorganic waste</div>
-            <p>We treat ~4 kg/day of used textiles (≈75% cotton/cellulose, 21% polyester, 4% nylon) not as trash but as feedstock. Goal: convert one fraction into nutritional yeast and route the rest into useful materials.</p>
-
-            <h3 class="sub">Step by step</h3>
-            <ol class="steps">
-              <li><strong>Rapid hygiene</strong> — UV-C + mild pasteurization keeps downstream operations clean and safe.</li>
-              <li><strong>Shredding & separation</strong> — Fibers are milled, then split into cotton, polyester, and nylon via <em>tribo-electrostatic</em> separation.</li>
-              <li><strong>The “sugar factory”</strong> — Cotton (cellulose) enters a bioreactor. Enzymes from friendly microbes cut fibers into glucose (~2.85 kg/day). ~10% of enzymes are recirculated.</li>
-              <li><strong>Yeast works</strong> — Glucose is polished and sterilized, then fed (aerobic fed-batch) to grow yeast. Biomass is heat-inactivated and dried → nutritional yeast ~1.35 kg/day, 45–55% protein (~0.6–0.7 kg/day protein).</li>
-              <li><strong>The rest</strong> — Nylon diverts to a separate line (e.g., 3D-printing filament). Polyester handling is planned for the next sprint.</li>
-            </ol>
-
-            <h3 class="sub">Why this works on Mars</h3>
-            <ul class="ticks">
-              <li>Low water & crew time, fully closed-loop, no incineration.</li>
-              <li>Design considers vibration/shock, g-loads, and microgravity fluid handling for future flight readiness.</li>
-            </ul>
-          </div>
-        </div>
+      <!-- Intro -->
+      <div class="card">
+        <h1>Turning space waste into food and materials</h1>
+        <div class="kicker">Who we are</div>
+        <p>BioCycleX is an engineering–biotech team that turns space textile waste into glucose syrup via a closed, safe enzymatic process, then converts that glucose into edible or useful products (e.g., nutritional yeast, biogases, PLA precursors). Our system is built for real Mars constraints: minimal water and crew time, no incineration, and low risk.</p>
+        <div class="kicker" style="margin-top:16px">Our mission</div>
+        <p>We are building a modular, Mars-ready circular system that first targets one of the largest waste streams—fabrics—and converts it into a platform product: glucose. From there, we flexibly route it into nutritional yeast, plant fertilizer, bioplastics (PLA), or fuel components, reducing resupply mass from Earth. From microbe selection to system architecture, we’ve already designed toward future spaceflight compliance—accounting for vibration profiles, g-loads, and microgravity fluid handling—so the platform can be qualified to relevant standards.</p>
+        <p>Looking ahead: the approach is expandable to additional waste types. For now, we demonstrate the most immediate chain: textile → sugar → yeast, because it’s fast to grasp and directly useful for the crew.</p>
+      </div>
+    
+      <!-- Workflow figure -->
+      <figure class="card" style="margin-top:18px">
+        <img class="flow-img" src="assets/textil_example_flowchart.png" alt="Workflow turning textiles into glucose and nutritional yeast" loading="lazy" />
+        <figcaption class="fine">Example technical workflow — fabrics → sugar → yeast.</figcaption>
+      </figure>
+    
+      <!-- Workflow explanation -->
+      <div class="card">
+        <div class="kicker">Example technical workflow — fabrics ≈30% of total inorganic waste</div>
+        <p>We treat ~4 kg/day of used textiles (≈75% cotton/cellulose, 21% polyester, 4% nylon) not as trash but as feedstock. Goal: convert one fraction into nutritional yeast and route the rest into useful materials.</p>
+    
+        <h3 class="sub">Step by step</h3>
+        <ol class="steps">
+          <li><strong>Rapid hygiene</strong> — UV-C + mild pasteurization keeps downstream operations clean and safe.</li>
+          <li><strong>Shredding & separation</strong> — Fibers are milled, then split into cotton, polyester, and nylon via <em>tribo-electrostatic</em> separation.</li>
+          <li><strong>The “sugar factory”</strong> — Cotton (cellulose) enters a bioreactor. Enzymes from friendly microbes cut fibers into glucose (~2.85 kg/day). ~10% of enzymes are recirculated.</li>
+          <li><strong>Yeast works</strong> — Glucose is polished and sterilized, then fed (aerobic fed-batch) to grow yeast. Biomass is heat-inactivated and dried → nutritional yeast ~1.35 kg/day, 45–55% protein (~0.6–0.7 kg/day protein).</li>
+          <li><strong>The rest</strong> — Nylon diverts to a separate line (e.g., 3D-printing filament). Polyester handling is planned for the next sprint.</li>
+        </ol>
+    
+        <h3 class="sub">Why this works on Mars</h3>
+        <ul class="ticks">
+          <li>Low water & crew time, fully closed-loop, no incineration.</li>
+          <li>Design considers vibration/shock, g-loads, and microgravity fluid handling for future flight readiness.</li>
+        </ul>
       </div>
     </section>
+
 
     <!-- CALCULATOR -->
     <section id="calculator">
@@ -158,6 +157,9 @@
             <div class="stat"><div id="totMass">0</div><small>Total textile mass (kg)</small></div>
             <div class="stat"><div id="totCellulose">0</div><small>Total cellulose (kg)</small></div>
             <div class="stat"><div id="yeastKg">0</div><small>Nutritional yeast (kg)</small></div>
+          </div>
+          <div class="stats" style="margin-top:12px">
+            <div class="stat"><div id="bars">0</div><small>Space bars (100 g each)</small></div>
           </div>
 
           <h3 style="margin-top:16px">Nutrition (batch total)</h3>
@@ -207,7 +209,7 @@
 
     // Render select from DB
     function renderSelect(){
-      const sel = el('itemSelect');
+      const sel = document.getElementById('itemSelect');
       sel.innerHTML = '';
       DB.forEach((r,i)=>{
         const opt = document.createElement('option');
@@ -219,7 +221,7 @@
 
     // Render chosen chips
     function renderChosen(){
-      const box = el('chosen');
+      const box = document.getElementById('chosen');
       box.innerHTML = '';
       chosen.forEach((c,idx)=>{
         const chip = document.createElement('div');
@@ -251,7 +253,7 @@
     }
 
     function addSelected(){
-      const sel = el('itemSelect');
+      const sel = document.getElementById('itemSelect');
       const picks = [...sel.selectedOptions].map(o=>DB[parseInt(o.value,10)]);
       picks.forEach(r=>{
         if(!chosen.find(c=>c.item===r.item)){
@@ -263,7 +265,7 @@
 
     function calculate(){
       if(!chosen.length){
-        el('summary').innerHTML = '<p>Select at least one item.</p>';
+        document.getElementById('summary').innerHTML = '<p>Select at least one item.</p>';
         updateNumbers(0,0,0);
         return;
       }
@@ -271,7 +273,7 @@
       const cellu     = chosen.reduce((s,c)=> s + c.qty*c.mass*c.frac, 0);
       const yeast     = cellu * YEAST_YIELD;
 
-      el('summary').innerHTML =
+      document.getElementById('summary').innerHTML =
         '<ul>' + chosen.map(c=>(
           `<li>${c.qty} × ${c.item} — ${(c.qty*c.mass).toFixed(3)} kg textile, ${(c.qty*c.mass*c.frac).toFixed(3)} kg cellulose</li>`
         )).join('') + '</ul>';
@@ -280,20 +282,24 @@
     }
 
     function updateNumbers(totalMass, cellu, yeast){
-      el('totMass').textContent = fmt(totalMass);
-      el('totCellulose').textContent = fmt(cellu);
-      el('yeastKg').textContent = fmt(yeast);
+      document.getElementById('totMass').textContent = fmt(totalMass);
+      document.getElementById('totCellulose').textContent = fmt(cellu);
+      document.getElementById('yeastKg').textContent = fmt(yeast);
 
       const g = yeast * 1000;
       const f = g/100;
-      el('kcal').textContent     = fmt(nutrPer100.kcal*f);
-      el('kj').textContent       = fmt(nutrPer100.kj*f);
-      el('proteinG').textContent = fmt(nutrPer100.proteinG*f);
-      el('fatG').textContent     = fmt(nutrPer100.fatG*f);
-      el('satG').textContent     = fmt(nutrPer100.satG*f);
-      el('carbG').textContent    = fmt(nutrPer100.carbG*f);
-      el('sugarG').textContent   = fmt(nutrPer100.sugarG*f);
-      el('saltG').textContent    = fmt(nutrPer100.saltG*f);
+      document.getElementById('kcal').textContent     = fmt(nutrPer100.kcal*f);
+      document.getElementById('kj').textContent       = fmt(nutrPer100.kj*f);
+      document.getElementById('proteinG').textContent = fmt(nutrPer100.proteinG*f);
+      document.getElementById('fatG').textContent     = fmt(nutrPer100.fatG*f);
+      document.getElementById('satG').textContent     = fmt(nutrPer100.satG*f);
+      document.getElementById('carbG').textContent    = fmt(nutrPer100.carbG*f);
+      document.getElementById('sugarG').textContent   = fmt(nutrPer100.sugarG*f);
+      document.getElementById('saltG').textContent    = fmt(nutrPer100.saltG*f);
+      // 1 bar = 100 g yeast  => bars = yeast_kg * 10
+      const bars = yeast * 10;
+      // egész darabszámot írunk ki
+      document.getElementById('bars').textContent = Math.floor(bars).toString();
     }
 
     // CSV load with fallback
@@ -308,18 +314,39 @@
       });
     }
 
+    // Expanded 31-item fallback
     const FALLBACK_DATA = [
       {"item":"T-shirt","avg_weight_kg":0.18,"cellulose_fraction":0.75},
       {"item":"Shirt","avg_weight_kg":0.20,"cellulose_fraction":0.75},
+      {"item":"Polo shirt","avg_weight_kg":0.22,"cellulose_fraction":0.75},
       {"item":"Jeans","avg_weight_kg":0.60,"cellulose_fraction":0.90},
       {"item":"Pants","avg_weight_kg":0.50,"cellulose_fraction":0.75},
+      {"item":"Shorts","avg_weight_kg":0.20,"cellulose_fraction":0.60},
+      {"item":"Sweatpants","avg_weight_kg":0.55,"cellulose_fraction":0.65},
+      {"item":"Leggings","avg_weight_kg":0.20,"cellulose_fraction":0.40},
       {"item":"Hoodie","avg_weight_kg":0.55,"cellulose_fraction":0.70},
+      {"item":"Sweater","avg_weight_kg":0.45,"cellulose_fraction":0.60},
       {"item":"Dress","avg_weight_kg":0.35,"cellulose_fraction":0.70},
-      {"item":"One pair of socks","avg_weight_kg":0.06,"cellulose_fraction":0.75},
+      {"item":"Skirt","avg_weight_kg":0.25,"cellulose_fraction":0.70},
+      {"item":"Jacket","avg_weight_kg":0.80,"cellulose_fraction":0.40},
+      {"item":"Coat","avg_weight_kg":1.20,"cellulose_fraction":0.30},
+      {"item":"Scarf","avg_weight_kg":0.18,"cellulose_fraction":0.80},
+      {"item":"Beanie","avg_weight_kg":0.08,"cellulose_fraction":0.50},
+      {"item":"Gloves (pair)","avg_weight_kg":0.09,"cellulose_fraction":0.50},
       {"item":"Underwear","avg_weight_kg":0.05,"cellulose_fraction":0.75},
+      {"item":"One pair of socks","avg_weight_kg":0.06,"cellulose_fraction":0.75},
       {"item":"Towel","avg_weight_kg":0.40,"cellulose_fraction":0.90},
+      {"item":"Washcloth","avg_weight_kg":0.06,"cellulose_fraction":1.00},
+      {"item":"Bathrobe","avg_weight_kg":1.00,"cellulose_fraction":0.85},
       {"item":"Bedsheet (single)","avg_weight_kg":0.50,"cellulose_fraction":1.00},
-      {"item":"Tissue","avg_weight_kg":0.005,"cellulose_fraction":1.00}
+      {"item":"Bedsheet (double)","avg_weight_kg":0.80,"cellulose_fraction":1.00},
+      {"item":"Pillowcase","avg_weight_kg":0.12,"cellulose_fraction":1.00},
+      {"item":"Duvet cover","avg_weight_kg":0.70,"cellulose_fraction":1.00},
+      {"item":"Blanket","avg_weight_kg":1.50,"cellulose_fraction":0.80},
+      {"item":"Duvet","avg_weight_kg":2.00,"cellulose_fraction":0.20},
+      {"item":"Kitchen cloth","avg_weight_kg":0.08,"cellulose_fraction":1.00},
+      {"item":"Tissue","avg_weight_kg":0.005,"cellulose_fraction":1.00},
+      {"item":"Baby onesie","avg_weight_kg":0.06,"cellulose_fraction":0.75}
     ];
 
     async function loadData(){
