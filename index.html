@@ -99,6 +99,14 @@
   .bars-icons{display:flex;flex-wrap:wrap;gap:6px;max-width:240px}
   .bars-icons img{width:26px;height:auto;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15));border-radius:6px}
   .more-badge{align-self:center;font-size:12px;background:var(--mint);border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:3px 8px}
+
+  .spacebars-figure{margin-top:14px}
+  .spacebars-img{
+    width:100%; height:auto; display:block;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,.06);
+  }
+  
       
   </style>
 </head>
@@ -178,6 +186,8 @@
           </div>
         </div>
 
+        
+
         <!-- RIGHT: results -->
         <div class="results">
           <h3>Results</h3>
@@ -219,6 +229,16 @@
       </div>
     </section>
 
+    <figure class="spacebars-figure">
+      <img
+        class="spacebars-img"
+        src="assets/space_bars.png"
+        alt="SPACE BAR — nutritional yeast 100 g (package variants)"
+        loading="lazy"
+      />
+      <figcaption class="fine">Each “Space Bar” equals 100 g nutritional yeast.</figcaption>
+    </figure>
+    
   <footer class="wrap">
     <div class="row">
       <small>© <span id="year"></span> BioCycleX</small>
@@ -429,6 +449,7 @@
   </script>
 </body>
 </html>
+
 
 
 
