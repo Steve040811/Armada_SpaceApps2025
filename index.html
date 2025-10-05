@@ -92,8 +92,13 @@
     border-radius:999px;
     padding:3px 8px;
   }
-  
-  
+
+  /* Space bars inline vizuál a darabszám mellett */
+  .stat-bars .bars-row{display:flex;align-items:center;justify-content:center;gap:10px}
+  .bars-count{font-weight:700;font-size:22px;line-height:1}
+  .bars-icons{display:flex;flex-wrap:wrap;gap:6px;max-width:240px}
+  .bars-icons img{width:26px;height:auto;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15));border-radius:6px}
+  .more-badge{align-self:center;font-size:12px;background:var(--mint);border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:3px 8px}
       
   </style>
 </head>
@@ -183,10 +188,12 @@
             <div class="stat"><div id="yeastKg">0</div><small>Nutritional yeast (kg)</small></div>
           </div>
           <div class="stats" style="margin-top:12px">
-            <div class="stat">
-              <div id="bars">0</div>
-              <small>Space bars (100 g)</small>
-              <div id="barsVisual" class="bars-visual" aria-live="polite"></div>
+            <div class="stat stat-bars">
+              <div class="bars-row">
+                <div id="bars" class="bars-count">0</div>
+                <div id="barsIcons" class="bars-icons" aria-label="Space bars visuals"></div>
+              </div>
+              <small>Space bars (100 g each)</small>
             </div>
           </div>
 
@@ -320,27 +327,28 @@
       // egész darabszámot írunk ki
       document.getElementById('bars').textContent = Math.floor(bars).toString();
 
-      // Visual row: 1 bar = 100 g yeast
-    const nBars = Math.floor(yeast * 10); // kg -> darab (100 g)
-    const visual = document.getElementById('barsVisual');
-    visual.innerHTML = '';
-    const CAP = 12; // ennyit rajzolunk ki max
-    
-    const shown = Math.min(nBars, CAP);
-    for(let i=0;i<shown;i++){
-      const img = document.createElement('img');
-      img.src = 'assets/spacebar.png';
-      img.alt = 'Space bar';
-      // ha esetleg hiányzik a kép, mutasson egy emoji-t:
-      img.onerror = () => { img.replaceWith(Object.assign(document.createElement('span'), {textContent:'🍫'})); };
-      visual.appendChild(img);
-    }
-    if(nBars > CAP){
-      const more = document.createElement('span');
-      more.className = 'more-badge';
-      more.textContent = `+${nBars - CAP} more`;
-      visual.appendChild(more);
-    }
+      // ---- Space bars: 1 bar = 100 g yeast ----
+      const nBars = Math.floor(yeast * 10); // kg -> darab (100 g)
+      document.getElementById('bars').textContent = nBars.toString();
+      
+      const icons = document.getElementById('barsIcons');
+      icons.innerHTML = '';
+      const CAP = 20; // ennyit jelenítünk meg képpel inline
+      
+      for (let i = 0; i < Math.min(nBars, CAP); i++) {
+        const img = new Image();
+        img.src = 'assets/spacebar.png';
+        img.alt = 'Space bar';
+        // ha a kép hiányzik, jöjjön emoji
+        img.onerror = () => { img.replaceWith(Object.assign(document.createElement('span'), {textContent:'🍫'})); };
+        icons.appendChild(img);
+      }
+      if (nBars > CAP) {
+        const more = document.createElement('span');
+        more.className = 'more-badge';
+        more.textContent = `+${nBars - CAP}`;
+        icons.appendChild(more);
+      }
     }
 
     // CSV load with fallback
@@ -416,6 +424,7 @@
   </script>
 </body>
 </html>
+
 
 
 
