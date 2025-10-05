@@ -70,6 +70,31 @@
       padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer
     }
     button.primary:hover{filter:brightness(1.05)}
+
+    .bars-visual{
+    margin-top:8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    justify-content:center;
+  }
+  .bars-visual img{
+    width:36px; height:auto;
+    display:block;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.15));
+    border-radius:6px;
+  }
+  .more-badge{
+    align-self:center;
+    font-size:12px;
+    background:var(--mint);
+    border:1px solid rgba(0,0,0,.08);
+    border-radius:999px;
+    padding:3px 8px;
+  }
+  
+  
+      
   </style>
 </head>
 <body>
@@ -158,7 +183,11 @@
             <div class="stat"><div id="yeastKg">0</div><small>Nutritional yeast (kg)</small></div>
           </div>
           <div class="stats" style="margin-top:12px">
-            <div class="stat"><div id="bars">0</div><small>Space bars (100 g each)</small></div>
+            <div class="stat">
+              <div id="bars">0</div>
+              <small>Space bars (100 g)</small>
+              <div id="barsVisual" class="bars-visual" aria-live="polite"></div>
+            </div>
           </div>
 
           <h3 style="margin-top:16px">Nutrition (batch total)</h3>
@@ -290,6 +319,28 @@
       const bars = yeast * 10;
       // egész darabszámot írunk ki
       document.getElementById('bars').textContent = Math.floor(bars).toString();
+
+      // Visual row: 1 bar = 100 g yeast
+    const nBars = Math.floor(yeast * 10); // kg -> darab (100 g)
+    const visual = document.getElementById('barsVisual');
+    visual.innerHTML = '';
+    const CAP = 12; // ennyit rajzolunk ki max
+    
+    const shown = Math.min(nBars, CAP);
+    for(let i=0;i<shown;i++){
+      const img = document.createElement('img');
+      img.src = 'assets/spacebar.png';
+      img.alt = 'Space bar';
+      // ha esetleg hiányzik a kép, mutasson egy emoji-t:
+      img.onerror = () => { img.replaceWith(Object.assign(document.createElement('span'), {textContent:'🍫'})); };
+      visual.appendChild(img);
+    }
+    if(nBars > CAP){
+      const more = document.createElement('span');
+      more.className = 'more-badge';
+      more.textContent = `+${nBars - CAP} more`;
+      visual.appendChild(more);
+    }
     }
 
     // CSV load with fallback
@@ -365,6 +416,7 @@
   </script>
 </body>
 </html>
+
 
 
 
