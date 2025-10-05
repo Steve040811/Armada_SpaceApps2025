@@ -191,7 +191,7 @@
             <!-- Bal: darabszám -->
             <div class="stat">
               <div id="barsNumber">0</div>
-              <small>Space bars (100 g each)</small>
+              <small>Space bars (100 g)</small>
             </div>
           
             <!-- Jobb: ikonok sora -->
@@ -335,18 +335,21 @@
 
       // ---- Space bars: 1 bar = 100 g yeast ----
       const nBars = Math.floor(yeast * 10); // kg -> darab (100 g)
-      document.getElementById('bars').textContent = nBars.toString();
+      document.getElementById('barsNumber').textContent = nBars.toString();
       
       const icons = document.getElementById('barsIcons');
       icons.innerHTML = '';
-      const CAP = 20; // ennyit jelenítünk meg képpel inline
+      const CAP = 20; // ennyit rajzolunk ki képpel
       
       for (let i = 0; i < Math.min(nBars, CAP); i++) {
         const img = new Image();
-        img.src = 'assets/spacebar.png';
+        img.src = 'assets/spacebar.png';   // <-- ide tedd a képet
         img.alt = 'Space bar';
-        // ha a kép hiányzik, jöjjön emoji
-        img.onerror = () => { img.replaceWith(Object.assign(document.createElement('span'), {textContent:'🍫'})); };
+        img.onerror = () => {               // ha hiányzik a kép, jöjjön emoji
+          const s = document.createElement('span');
+          s.textContent = '🍫';
+          icons.appendChild(s);
+        };
         icons.appendChild(img);
       }
       if (nBars > CAP) {
@@ -430,6 +433,7 @@
   </script>
 </body>
 </html>
+
 
 
 
