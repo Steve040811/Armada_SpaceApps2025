@@ -1,126 +1,249 @@
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Armada - SpaceApps2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BioCycleX</title>
+  <meta name="description" content="BioCycleX — Closed-loop textile-to-food platform for Mars and remote ops." />
   <style>
-    :root { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color: #111; }
-    body { padding: 24px; max-width: 720px; margin: 0 auto; }
-    h1 { font-size: 1.4rem; margin-bottom: 8px; }
-    p.lead { margin-top: 0; color:#444; font-size:0.95rem; }
-    label { display:block; margin-top:12px; font-weight:600; font-size:0.95rem; }
-    input[type="number"], input[readonly], .output {
-      width: 100%;
-      padding: 10px;
-      font-size: 1rem;
-      box-sizing: border-box;
-      margin-top:6px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+    :root{
+      --bg:#f6f0eb;
+      --mint:#cdd6cd;
+      --ink:#232323;
+      --muted:#5a5a5a;
+      --card:#ffffff;
+      --accent:#2f5f2f;
     }
-    .controls { margin-top: 14px; display:flex; gap:10px; }
-    button {
-      padding: 10px 14px;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 8px;
-      border: none;
-      background: #0b76ff;
-      color: white;
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Agrandir',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+    /* Sticky header */
+    header{
+      position:sticky;top:0;z-index:1000;
+      background:var(--mint);
+      backdrop-filter:saturate(150%) blur(4px);
+      box-shadow:0 2px 10px rgba(0,0,0,.08);
     }
-    button.secondary {
-      background: #e6e6e6;
-      color: #111;
+    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+    .row{display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:12px;padding:10px 0}
+    .brand img{height:42px;width:auto;display:block}
+    nav a{color:#0b3d0b;text-decoration:none;font-weight:600;margin:0 10px}
+    nav a:hover{opacity:.75}
+    main section{padding:40px 0;border-bottom:1px dashed rgba(0,0,0,.08)}
+    h1,h2{letter-spacing:.3px;margin:0 0 12px 0}
+    h1{font-size:clamp(28px,3.2vw,40px)}
+    h2{font-size:clamp(22px,2.4vw,28px)}
+    p{margin:8px 0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1fr;gap:22px}
+    @media(min-width:900px){.grid{grid-template-columns:1.1fr .9fr}}
+    .card{background:var(--card);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:18px;box-shadow:0 6px 24px rgba(0,0,0,.04)}
+    .kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#275127;margin-bottom:6px}
+    .flow-img{width:100%;height:auto;border-radius:14px;border:1px solid rgba(0,0,0,.08)}
+    .calc-wrap{display:grid;grid-template-columns:1fr;gap:18px}
+    @media(min-width:980px){.calc-wrap{grid-template-columns:1fr 1fr}}
+    .items{display:grid;grid-template-columns:1fr;gap:6px;max-height:360px;overflow:auto;padding-right:6px}
+    .item{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid rgba(0,0,0,.07);border-radius:12px;background:#fff}
+    .qty{margin-left:auto;display:flex;align-items:center;gap:6px}
+    input[type="number"]{width:70px;padding:6px 8px;border-radius:10px;border:1px solid rgba(0,0,0,.2)}
+    button.primary{
+      background:linear-gradient(180deg,#2c6e2c,#1e4f1e);color:#fff;border:none;
+      padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer
     }
-    .hint { color:#666; font-size:0.9rem; margin-top:10px; }
-    .result-label { margin-top:16px; font-weight:600; }
+    button.primary:hover{filter:brightness(1.05)}
+    .results{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.06);padding:16px}
+    .results h3{margin-top:6px}
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media(min-width:720px){.stats{grid-template-columns:repeat(3,1fr)}}
+    .stat{background:var(--bg);border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px;text-align:center}
+    small.code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;color:#3a3a3a}
+    footer{padding:40px 0;color:#2a2a2a}
   </style>
 </head>
 <body>
-  <h1>Interactive Calculator</h1>
-  <p class="lead">We have provided an example, but you can try it out with your own quantities. Enter numbers into the fields below and press <strong>Calculate</strong>. The result will appear in the readonly output field.</p>
-
-  <form id="calculator" aria-labelledby="calc-title">
-    <label for="a">Cotton
-      <input id="a" name="a" type="number" step="any" value="2" required aria-describedby="a-desc">
-    </label>
-
-    <label for="b">B (number)
-      <input id="b" name="b" type="number" step="any" value="3" required aria-describedby="b-desc">
-    </label>
-
-    <label for="c">C (number)
-      <input id="c" name="c" type="number" step="any" value="1" required aria-describedby="c-desc">
-    </label>
-
-    <div class="controls">
-      <button id="calcBtn" type="submit">Calculate</button>
-      <button id="clearBtn" type="button" class="secondary">Clear</button>
+  <header>
+    <div class="wrap row brand">
+      <img src="assets/BioCycleX.png" alt="BioCycleX logo" />
+      <strong>BioCycleX</strong>
+      <nav class="row" style="margin-left:auto">
+        <a href="#about">About</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#calculator">Calculator</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="hint">Decimal comma is supported (e.g. "1,5" will be interpreted as 1.5).</div>
+  <main class="wrap">
+    <section id="hero">
+      <div class="grid">
+        <div class="card">
+          <div class="kicker">Who we are</div>
+          <h1>Turning space textile waste into food and materials</h1>
+          <p>BioCycleX is an engineering–biotech team that turns space textile waste into glucose syrup via a closed, safe enzymatic process, then converts that glucose into edible or useful products (e.g., nutritional yeast, biogases, PLA precursors). Our system is built for real Mars constraints: minimal water and crew time, no incineration, and low risk.</p>
+          <div class="kicker" style="margin-top:16px">Our mission</div>
+          <p>We are building a modular, Mars-ready circular system that first targets one of the largest waste streams—fabrics—and converts it into a platform product: glucose. From there, we flexibly route it into nutritional yeast, plant fertilizer, bioplastics (PLA), or fuel components, reducing resupply mass from Earth. The system is closed-loop, relies on non-pathogenic microbes, and can scale beyond textiles to other polymers.</p>
+        </div>
+        <div>
+          <img class="flow-img" src="assets/textil_example_flowchart.png" alt="Textile → glucose → yeast flowchart" />
+          <p style="font-size:12px;color:#666;margin:6px 4px 0 4px">Example technical workflow — fabrics → sugar → yeast.</p>
+        </div>
+      </div>
+    </section>
 
-    <div class="result-label">Result</div>
-    <input id="result" class="output" type="text" readonly placeholder="Result will appear here" aria-live="polite" />
-  </form>
+    <section id="calculator">
+      <h2>Clothes → Cellulose → Nutritional Yeast Calculator</h2>
+      <p>Select what you’re wearing, set quantities, then hit <strong>Calculate</strong>. The tool multiplies the average garment mass by its cellulose fraction, sums it, and converts cellulose to yeast with the rule: <strong>x kg cellulose → 0.456 × x kg nutritional yeast</strong>.</p>
+
+      <div class="calc-wrap">
+        <div class="card">
+          <div class="kicker">Choose items</div>
+          <div id="items" class="items" aria-live="polite"></div>
+          <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
+            <button class="primary" id="calcBtn">Calculate</button>
+            <small class="code">Data source: <code>textiles_db.csv</code></small>
+          </div>
+        </div>
+
+        <div class="results">
+          <h3>Results</h3>
+          <div id="summary"></div>
+          <div class="stats" style="margin-top:12px">
+            <div class="stat"><div id="totMass">0</div><small>Total textile mass (kg)</small></div>
+            <div class="stat"><div id="totCellulose">0</div><small>Total cellulose (kg)</small></div>
+            <div class="stat"><div id="yeastKg">0</div><small>Nutritional yeast (kg)</small></div>
+          </div>
+
+          <h3 style="margin-top:16px">Nutrition (batch total)</h3>
+          <p style="margin-top:0">Typical values per 100 g yeast: 1345 kJ / 320 kcal · Fat 4.8 g (sat 1.6 g) · Carbs 9 g (sugars 9 g) · Protein 47 g · Salt 0.5 g</p>
+          <div class="stats">
+            <div class="stat"><div id="kcal">0</div><small>Total kcal</small></div>
+            <div class="stat"><div id="kj">0</div><small>Total kJ</small></div>
+            <div class="stat"><div id="proteinG">0</div><small>Protein (g)</small></div>
+            <div class="stat"><div id="fatG">0</div><small>Fat (g)</small></div>
+            <div class="stat"><div id="satG">0</div><small>Saturates (g)</small></div>
+            <div class="stat"><div id="carbG">0</div><small>Carbohydrate (g)</small></div>
+            <div class="stat"><div id="sugarG">0</div><small>Sugars (g)</small></div>
+            <div class="stat"><div id="saltG">0</div><small>Salt (g)</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="card">
+        <div class="kicker">Notes</div>
+        <p><strong>Fonts:</strong> This page expects “Agrandir”. Add a webfont later or install locally; we fall back to system fonts here.</p>
+        <p><strong>Assets:</strong> Place <code>assets/BioCycleX.png</code> and <code>assets/textil_example_flowchart.png</code> next to this file in an <code>assets/</code> folder.</p>
+        <p><strong>GitHub Pages:</strong> Commit <code>index.html</code> and <code>textiles_db.csv</code> to your repo and enable Pages. It will “just work”.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <div class="row">
+      <small>© <span id="year"></span> BioCycleX</small>
+      <span style="margin-left:auto"><small>Background #f6f0eb · Header #cdd6cd</small></span>
+    </div>
+  </footer>
 
   <script>
-    // Safely parse numbers; accepts comma or dot as decimal separator.
-    function toNumber(value) {
-      if (value === null || value === undefined) return 0;
-      const normalized = String(value).trim().replace(',', '.');
-      const parsed = parseFloat(normalized);
-      return Number.isFinite(parsed) ? parsed : 0;
+    const csvPath = 'textiles_db.csv';
+    const ITEMS_DIV = document.getElementById('items');
+    const SUMMARY_DIV = document.getElementById('summary');
+    const YEAST_YIELD = 0.456; // kg yeast per kg cellulose
+
+    const nutrPer100 = {
+      kcal: 320, kj: 1345, fatG: 4.8, satG: 1.6, carbG: 9, sugarG: 9, proteinG: 47, saltG: 0.5
+    };
+
+    const el = id => document.getElementById(id);
+    const fmt = n => Number(n).toLocaleString(undefined,{maximumFractionDigits:3});
+
+    function renderItems(data){
+      ITEMS_DIV.innerHTML='';
+      data.forEach((r,idx)=>{
+        const id = 'it_'+idx;
+        const row = document.createElement('label');
+        row.className = 'item';
+        row.innerHTML = \`
+          <input type="checkbox" id="\${id}" data-item="\${r.item}" data-mass="\${r.avg_weight_kg}" data-frac="\${r.cellulose_fraction}" />
+          <span>\${r.item}</span>
+          <span style="color:#666">· \${r.avg_weight_kg} kg · cellulose \${Math.round(r.cellulose_fraction*100)}%</span>
+          <div class="qty">
+            <span>qty</span>
+            <input type="number" min="1" step="1" value="1" data-qty-for="\${id}" />
+          </div>\`;
+        ITEMS_DIV.appendChild(row);
+      });
     }
 
-    //Formula
-    function compute(a, b, c) {
-      return a * b + c;
+    function parseCSV(text){
+      const [head, ...rows] = text.trim().split(/\r?\n/);
+      const cols = head.split(',').map(s=>s.trim());
+      return rows.map(line=>{
+        const cells = line.split(',').map(s=>s.trim());
+        const obj = {};
+        cols.forEach((c,i)=> obj[c] = isNaN(parseFloat(cells[i])) ? cells[i] : parseFloat(cells[i]) );
+        return obj;
+      });
     }
-    // ------------------------------
 
-    const form = document.getElementById('calculator');
-    const aInput = document.getElementById('a');
-    const bInput = document.getElementById('b');
-    const cInput = document.getElementById('c');
-    const resultInput = document.getElementById('result');
-    const clearBtn = document.getElementById('clearBtn');
+    async function loadData(){
+      const res = await fetch(csvPath);
+      const txt = await res.text();
+      return parseCSV(txt);
+    }
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const a = toNumber(aInput.value);
-      const b = toNumber(bInput.value);
-      const c = toNumber(cInput.value);
-
-      const result = compute(a, b, c);
-
-      // Format result (remove trailing zeros for readability)
-      const str = (Math.round((result + Number.EPSILON) * 1e12) / 1e12).toString();
-      resultInput.value = str;
-      resultInput.focus();
-    });
-
-    clearBtn.addEventListener('click', function () {
-      aInput.value = '';
-      bInput.value = '';
-      cInput.value = '';
-      resultInput.value = '';
-      aInput.focus();
-    });
-
-    // Allow Enter in any input to trigger calculation
-    [aInput, bInput, cInput].forEach(inp => {
-      inp.addEventListener('keydown', (ev) => {
-        if (ev.key === 'Enter') {
-          ev.preventDefault();
-          form.dispatchEvent(new Event('submit', { cancelable: true }));
+    function calculate(){
+      const checks = [...ITEMS_DIV.querySelectorAll('input[type="checkbox"]')];
+      const chosen = [];
+      checks.forEach(chk=>{
+        if(chk.checked){
+          const qty = parseInt(ITEMS_DIV.querySelector('input[data-qty-for="'+chk.id+'"]').value || '1',10);
+          chosen.push({
+            item: chk.dataset.item,
+            qty,
+            mass: parseFloat(chk.dataset.mass),
+            frac: parseFloat(chk.dataset.frac)
+          });
         }
       });
-    });
+      if(!chosen.length){
+        SUMMARY_DIV.innerHTML = '<p>Select at least one item.</p>';
+        updateNumbers(0,0,0);
+        return;
+      }
+      const totalMass = chosen.reduce((s,r)=>s + r.qty*r.mass, 0);
+      const cellu = chosen.reduce((s,r)=>s + r.qty*r.mass*r.frac, 0);
+      const yeast = cellu * YEAST_YIELD;
+      SUMMARY_DIV.innerHTML = '<ul>' + chosen.map(r=>`<li>${r.qty} × ${r.item} — ${(r.qty*r.mass).toFixed(3)} kg textile, ${(r.qty*r.mass*r.frac).toFixed(3)} kg cellulose</li>`).join('') + '</ul>';
+      updateNumbers(totalMass, cellu, yeast);
+    }
 
-    // Initial calculation on load
-    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    function updateNumbers(totalMass, cellu, yeast){
+      el('totMass').textContent = fmt(totalMass);
+      el('totCellulose').textContent = fmt(cellu);
+      el('yeastKg').textContent = fmt(yeast);
+
+      const g = yeast * 1000;
+      const factor = g/100; // per-100g basis
+      el('kcal').textContent = fmt(nutrPer100.kcal*factor);
+      el('kj').textContent = fmt(nutrPer100.kj*factor);
+      el('proteinG').textContent = fmt(nutrPer100.proteinG*factor);
+      el('fatG').textContent = fmt(nutrPer100.fatG*factor);
+      el('satG').textContent = fmt(nutrPer100.satG*factor);
+      el('carbG').textContent = fmt(nutrPer100.carbG*factor);
+      el('sugarG').textContent = fmt(nutrPer100.sugarG*factor);
+      el('saltG').textContent = fmt(nutrPer100.saltG*factor);
+    }
+
+    document.getElementById('calcBtn').addEventListener('click', calculate);
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    loadData().then(renderItems).catch(e=>{
+      ITEMS_DIV.innerHTML = '<p>Could not load textiles_db.csv. Make sure it sits next to index.html.</p>';
+      console.error(e);
+    });
   </script>
 </body>
 </html>
