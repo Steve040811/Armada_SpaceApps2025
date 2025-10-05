@@ -328,24 +328,20 @@
       document.getElementById('carbG').textContent    = fmt(nutrPer100.carbG*f);
       document.getElementById('sugarG').textContent   = fmt(nutrPer100.sugarG*f);
       document.getElementById('saltG').textContent    = fmt(nutrPer100.saltG*f);
-      // 1 bar = 100 g yeast  => bars = yeast_kg * 10
-      const bars = yeast * 10;
-      // egész darabszámot írunk ki
-      document.getElementById('bars').textContent = Math.floor(bars).toString();
-
+      
       // ---- Space bars: 1 bar = 100 g yeast ----
-      const nBars = Math.floor(yeast * 10); // kg -> darab (100 g)
+      const nBars = Math.floor(yeast * 10); // kg -> darab
       document.getElementById('barsNumber').textContent = nBars.toString();
       
       const icons = document.getElementById('barsIcons');
       icons.innerHTML = '';
-      const CAP = 20; // ennyit rajzolunk ki képpel
+      const CAP = 20; // max ikon, hogy ne boruljon szét
       
       for (let i = 0; i < Math.min(nBars, CAP); i++) {
         const img = new Image();
-        img.src = 'assets/spacebar.png';   // <-- ide tedd a képet
+        img.src = 'assets/spacebar.png';
         img.alt = 'Space bar';
-        img.onerror = () => {               // ha hiányzik a kép, jöjjön emoji
+        img.onerror = () => {
           const s = document.createElement('span');
           s.textContent = '🍫';
           icons.appendChild(s);
@@ -433,6 +429,7 @@
   </script>
 </body>
 </html>
+
 
 
 
